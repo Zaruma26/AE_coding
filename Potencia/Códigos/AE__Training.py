@@ -16,9 +16,11 @@ from keras.optimizers import Adam
 import random as rn
 import os 
 import time
+from PowerNormalizationLayer import PowerNormalizationLayer
 from keras import backend as K
 from EnergyNormalizationLayer import EnergyNormalizationLayer
 from tensorflow.keras.callbacks import EarlyStopping
+tf.keras.utils.get_custom_objects().update({'PowerNormalizationLayer': PowerNormalizationLayer})
 
 class TimeHistory(tf.keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
@@ -37,10 +39,10 @@ tf.random.set_seed(42)
 
     # DEFINIR PARAMETRO
 A=1   #amplitud E
-M = 2 # numero de simbolos
+M = 4 # numero de simbolos
 k = np.log2(M)
 # tasa de código
-n_channel = 3
+n_channel = 8
 R = k/n_channel
 print ('M:',M,'k:',k)
 print ('R:',int(k/R))
@@ -73,7 +75,7 @@ encoded = Dense(M, activation='relu')(input_signal)
 #SEGUNDA capa de codificación: CAPA DENSA CON n NEURONAS, ACTIVACION LINEAL
 encoded1 = Dense(n_channel, activation='linear')(encoded)
 #TERCERA capa de codificación: normalización de energia 
-encoded2 = EnergyNormalizationLayer(A,n_channel)(encoded1)
+encoded2 = PowerNormalizationLayer(A,n_channel)(encoded1)
 
 #Añade ruido gaussiano a la señal, simulando así el efecto del canal de comunicación ruidoso
 EbNo_train_dB = 3
@@ -179,5 +181,5 @@ plt.suptitle(f'Resultados del Entrenamiento del Modelo - AE({n_channel},{int(k)}
 
 plt.show()
 #Guarda el modelo entrenado
-autoencoder.save('3_1_AE_energy_3dB_relu_coded_fsk.model')
+autoencoder.save('8_4_AE_power_3dB_sk.keras')
 
