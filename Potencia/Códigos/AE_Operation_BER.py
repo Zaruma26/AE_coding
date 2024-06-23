@@ -24,39 +24,14 @@ import random as rn
 import time
 import os 
 from keras import backend as K
-from EnergyNormalizationLayer import EnergyNormalizationLayer
+from PowerNormalizationLayer import PowerNormalizationLayer
 from HelperAEWAWGNLayer import HelperAEWAWGNLayer
 import seaborn as sns
 from keras.models import load_model
 from scipy.special import erfc
 import time
+tf.keras.utils.get_custom_objects().update({'PowerNormalizationLayer': PowerNormalizationLayer})
 
-def theoretical_ber_16psk(EbN0):
-    """
-    Calcula el BER teórico para 16PSK dada una relación señal a ruido (Eb/N0) específica.
-    """
-    ##
-    ## Pe=1/(log2(M))erfc(sqrt(log2(M)(Eb/No))sen(pi/M))
-    ##
-    EsN0_linear = 10**(EbN0/10)  # Convertir de dB a lineal
-    ###
-    #ber = 1/2 * erfc(np.sqrt(EbN0_linear))
-    ####
-    
-    ber = 1/2 * erfc(np.sqrt (1/2*EsN0_linear))#4PSK-QPSK
-    
-    ###
-    #arg = np.sqrt(3 * EbN0_linear) * np.sin(np.pi / 8) #8PSK
-    #ber = 1/3 * erfc(arg)
-    ####
-    ###
-    #arg = np.sqrt(4 * EbN0_linear) * np.sin(np.pi / 16) #16PSK
-    #ber = 1/4 * erfc(arg)
-    ###
-    #arg = np.sqrt(5 * EbN0_linear) * np.sin(np.pi / 32) #32PSK
-    #ber = 1/5 * erfc(arg)
-    ####
-    return ber
 
 #inicializar semilla aleatoria
 seed=int(time.time())
@@ -70,12 +45,12 @@ output_folder = sys.argv[2] if len(sys.argv) > 2 else "results"
 
 
 #CARGAR EL MODELO ENTRENADO
-autoencoder_loaded = load_model('3_1_AE_energy_3dB_relu_coded_fsk.model')
+autoencoder_loaded = load_model('8_4_AE_power_3dB_sk.keras')
 
     
 N=1000000       #numero de datos transmitir
-n_channel =3    #nuermo de canales
-M=2             #numero de simbolos
+n_channel =8    #nuermo de canales
+M=16             #numero de simbolos
 k = np.log2(M)  #numero de bits
 R = k/n_channel #tasa de codigo
 
@@ -187,33 +162,10 @@ for n in range(0, len(EbNodB_range)):
 
     
 
-#### modulacion convencional
-# Rango de valores de Eb/N0 (en dB)
-#EbN0_dB = np.arange(0, 16, 2)
-# Calcula la BER teórica para cada valor de Eb/N0
-#ber_theoretical = [theoretical_ber_16psk(ebn0) for ebn0 in EbN0_dB]
-##############
-
 
 data = np.column_stack((EbNodB_range, ber))
-output_filename = os.path.join(output_folder, f'datos_AE_31_2cod_fdsk_{iteration}.txt')
+output_filename = os.path.join(output_folder, f'datos_AE_8_4_3dB_sk_cod_fd_{iteration}.txt')
 np.savetxt(output_filename, data, fmt='%f', delimiter='\t', header='EbNodB_range\tber')
 
-#filtered_EbNodB_range = [EbNodB for EbNodB, ber_value in zip(EbNodB_range, ber) if ber_value != 0]
-#filtered_ber = [ber_value for ber_value in ber if ber_value != 0]
-
-#Graficar BLER
-
-#plt.semilogy(filtered_EbNodB_range, filtered_ber, marker='D', label=f'R={Fraction(int(k), int(n_channel))}-Autoencoder({n_channel},{int(k)})')
-#plt.semilogy(EbNodB_range, ber,  marker="D",label=f'R={Fraction(int(k), int(n_channel))}-Autoencoder({n_channel},{int(k)})')
-#plt.semilogy(EbN0_dB, ber_theoretical,'ko--',label='16PSK')
-#plt.plot(list(EbNodB_range), ber_theory, 'ro-',label='BPSK BER')
-#plt.yscale('log')
-#plt.xlabel('SNR dB')
-#plt.ylabel('Symbol Error Rate')
-#plt.grid()
-#plt.legend(loc='upper right',ncol = 1)
-#plt.show()
-###################
 
 
