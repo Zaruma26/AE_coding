@@ -1,6 +1,6 @@
 close all; clc; clear all;
 % Número de archivos
-%QPSK no codificado
+%4QAM no codificado
 n=2;
 k=2;
 M=2^k;
@@ -100,8 +100,8 @@ ylabel('BLER');
 title('Semilogarítmica');
 grid on;
 % Calculate uncoded block error rate (R=k/n=1)
-pskBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
-semilogy(EbNodB,pskBLER,'r--','LineWidth',2)
+qamBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
+semilogy(EbNodB,qamBLER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,2),sprintf('AE (%d,%d)',3,2),sprintf('AE (%d,%d)',4,2),sprintf('4-QAM (%d,%d)',n,k))
 
@@ -137,7 +137,7 @@ ylabel('BER');
 title('Semilogarítmica');
 grid on;
 % Calculate uncoded block error rate (R=k/n=1)
-pskBER = berawgn(EbNodB,'qam',2^k,'nondiff');
-semilogy(EbNodB,pskBER,'r--','LineWidth',2)
+qamBER = berawgn(EbNodB,'qam',2^k,'nondiff');
+semilogy(EbNodB,qamBER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,2),sprintf('AE (%d,%d)',3,2),sprintf('AE (%d,%d)',4,2),sprintf('4-QAM (%d,%d)',n,k))
