@@ -1,6 +1,6 @@
 close all; clc; clear all;
 % Número de archivos
-%QPSK no codificado
+%128QAM no codificado
 n=7;
 k=7;
 M=2^k;
@@ -45,7 +45,7 @@ for i = 1:num_files
     ber_cal3(:, i) =1-(1-data3{i}.Var2).^(1/4);
 end
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (2,2)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (2,7)%
 mean_ber = mean(ber_matrix, 2);
 sem_ber = std(ber_matrix, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci_95 = 1.96 * sem_ber;  % Intervalo de confianza del 95%
@@ -53,7 +53,7 @@ mean_ber_cal = mean(ber_cal, 2);
 sem_ber_cal = std(ber_cal, 0, 2) / sqrt(num_files);
 ci_95_cal = 1.96 * sem_ber_cal;
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (3,2)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (7,7)%
 mean_ber2 = mean(ber_matrix2, 2);
 sem_ber2 = std(ber_matrix2, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci2_95 = 1.96 * sem_ber2;  % Intervalo de confianza del 95%
@@ -61,7 +61,7 @@ mean_ber_cal2 = mean(ber_cal2, 2);
 sem_ber_cal2 = std(ber_cal2, 0, 2) / sqrt(num_files);
 ci2_95_cal2 = 1.96 * sem_ber_cal2;
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (4,2)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (14,7)%
 mean_ber3 = mean(ber_matrix3, 2);
 sem_ber3 = std(ber_matrix3, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci3_95 = 1.96 * sem_ber3;  % Intervalo de confianza del 95%
@@ -100,8 +100,8 @@ ylabel('BLER');
 title('Semilogarítmica');
 grid on;
 % Calculate uncoded block error rate (R=k/n=1)
-pskBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
-semilogy(EbNodB,pskBLER,'r--','LineWidth',2)
+qamBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
+semilogy(EbNodB,qamBLER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,7),sprintf('AE (%d,%d)',7,7),sprintf('AE (%d,%d)',14,7),sprintf('4-QAM (%d,%d)',n,k))
 
@@ -137,7 +137,7 @@ ylabel('BER');
 title('Semilogarítmica');
 grid on;
 % Calculate uncoded block error rate (R=k/n=1)
-pskBER = berawgn(EbNodB,'qam',2^k,'nondiff');
-semilogy(EbNodB,pskBER,'r--','LineWidth',2)
+qamBER = berawgn(EbNodB,'qam',2^k,'nondiff');
+semilogy(EbNodB,qamBER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,7),sprintf('AE (%d,%d)',7,7),sprintf('AE (%d,%d)',14,7),sprintf('128-QAM (%d,%d)',n,k))
