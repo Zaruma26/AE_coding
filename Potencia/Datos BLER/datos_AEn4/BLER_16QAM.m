@@ -84,20 +84,6 @@ mean_ber_cal4 = mean(ber_cal4, 2);
 sem_ber_cal4 = std(ber_cal4, 0, 2) / sqrt(num_files);
 ci4_95_cal4 = 1.96 * sem_ber_cal4;
 
-% limit_sup2=abs(mean_ber2-ci2_95);
-% limit_inf2=abs(mean_ber2+ci2_95);
-% limit_sup3=abs(mean_ber3-ci3_95);
-% limit_inf3=abs(mean_ber3+ci3_95);
-% limit_sup4=abs(mean_ber4-ci4_95);
-% limit_inf4=abs(mean_ber4+ci4_95);
-
-
-limit_sup2=mean_ber2-ci2_95;
-limit_inf2=mean_ber2+ci2_95;
-limit_sup3=mean_ber3-ci3_95;
-limit_inf3=mean_ber3+ci3_95;
-limit_sup4=mean_ber4-ci4_95;
-limit_inf4=mean_ber4+ci4_95;
 
 
 % Graficar BLER
@@ -127,11 +113,10 @@ set(gca, 'YScale', 'log');
 %semilogy(EbNodB,mean_ber,'LineWidth',2)
 %semilogy(EbNodB,mean_ber2,'k','LineWidth',2)
 %semilogy(EbNodB,mean_ber3,'--','color',[0.9290 0.6940 0.1250],'LineWidth',2)
-%errorbar(EbNo, mean_ber2, limit_sup2, limit_inf2, '-kx','MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
 errorbar(EbNodB, mean_ber, ci_95, '','MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
-errorbar(EbNodB, mean_ber2,  limit_sup2, limit_inf2, 'k','MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
-errorbar(EbNodB, mean_ber3,  limit_sup3, limit_inf3, '--','color',[0.9290 0.6940 0.1250],'MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
-errorbar(EbNodB, mean_ber4,  limit_sup4, limit_inf4, '--','color',[0.10 0.65 0.25],'MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
+errorbar(EbNodB, mean_ber2,  ci2_95, 'k','MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
+errorbar(EbNodB, mean_ber3,  ci3_95 , '--','color',[0.9290 0.6940 0.1250],'MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
+errorbar(EbNodB, mean_ber4,  ci4_95 '--','color',[0.10 0.65 0.25],'MarkerSize',10 ,'CapSize',25,'LineWidth',1.5 );
 
 xlabel('Eb/No (dB)');
 xlim([0 15]);
