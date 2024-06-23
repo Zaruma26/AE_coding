@@ -1,6 +1,6 @@
 close all; clc; clear all;
 % Número de archivos
-%QPSK no codificado
+%32QAM no codificado
 n=5;
 k=5;
 M=2^k;
@@ -52,7 +52,7 @@ for i = 1:num_files
     ber_cal4(:, i) =1-(1-data4{i}.Var2).^(1/8);
 end
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (2,3)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (2,5)%
 mean_ber = mean(ber_matrix, 2);
 sem_ber = std(ber_matrix, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci_95 = 1.96 * sem_ber;  % Intervalo de confianza del 95%
@@ -60,7 +60,7 @@ mean_ber_cal = mean(ber_cal, 2);
 sem_ber_cal = std(ber_cal, 0, 2) / sqrt(num_files);
 ci_95_cal = 1.96 * sem_ber_cal;
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (3,3)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (5,5)%
 mean_ber2 = mean(ber_matrix2, 2);
 sem_ber2 = std(ber_matrix2, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci2_95 = 1.96 * sem_ber2;  % Intervalo de confianza del 95%
@@ -68,7 +68,7 @@ mean_ber_cal2 = mean(ber_cal2, 2);
 sem_ber_cal2 = std(ber_cal2, 0, 2) / sqrt(num_files);
 ci2_95_cal2 = 1.96 * sem_ber_cal2;
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (4,3)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (6,5)%
 mean_ber3 = mean(ber_matrix3, 2);
 sem_ber3 = std(ber_matrix3, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci3_95 = 1.96 * sem_ber3;  % Intervalo de confianza del 95%
@@ -76,7 +76,7 @@ mean_ber_cal3 = mean(ber_cal3, 2);
 sem_ber_cal3 = std(ber_cal3, 0, 2) / sqrt(num_files);
 ci3_95_cal3 = 1.96 * sem_ber_cal3;
 
-% Calcular la media y el intervalo de confianza del 95 Tasa (6,3)%
+% Calcular la media y el intervalo de confianza del 95 Tasa (10,5)%
 mean_ber4 = mean(ber_matrix4, 2);
 sem_ber4 = std(ber_matrix4, 0, 2) / sqrt(num_files);  % Error estándar de la media
 ci4_95 = 1.96 * sem_ber4;  % Intervalo de confianza del 95%
@@ -125,8 +125,8 @@ title('Semilogarítmica');
 grid on;
 
 % Calculate uncoded block error rate (R=k/n=1)
-pskBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
-semilogy(EbNodB,pskBLER,'r--','LineWidth',2)
+qamBLER = 1-(1-berawgn(EbNodB,'qam',2^k,'nondiff')).^n;
+semilogy(EbNodB,qamBLER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,5),sprintf('AE (%d,%d)',5,5),sprintf('AE (%d,%d)',6,5),sprintf('AE (%d,%d)',10,5),sprintf('32QAM (%d,%d)',n,k),'Location','southwest')
 
@@ -171,7 +171,7 @@ title('Semilogarítmica');
 grid on;
 
 % Calculate uncoded block error rate (R=k/n=1)
-pskBER = berawgn(EbNodB,'qam',32,'nondiff');
-semilogy(EbNodB,pskBER,'r--','LineWidth',2)
+qamBER = berawgn(EbNodB,'qam',32,'nondiff');
+semilogy(EbNodB,qamBER,'r--','LineWidth',2)
 hold off
 legend(sprintf('AE (%d,%d)',2,5),sprintf('AE (%d,%d)',5,5),sprintf('AE (%d,%d)',6,5),sprintf('AE (%d,%d)',10,5),sprintf('32QAM (%d,%d)',n,k),'Location','southwest')
