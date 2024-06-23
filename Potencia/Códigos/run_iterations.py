@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from fractions import Fraction
 def main():
     # Nombre de la carpeta donde se guardarán los resultados
-    output_folder = "datos_AE21"
+    output_folder = "datos_AEn4"
     
     # Asegurarse de que la carpeta de salida exista
     os.makedirs(output_folder, exist_ok=True)
